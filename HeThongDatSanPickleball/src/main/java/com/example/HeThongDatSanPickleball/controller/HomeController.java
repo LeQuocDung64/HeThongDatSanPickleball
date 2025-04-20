@@ -22,9 +22,16 @@ public class HomeController
     public String lienHePage(){
         return "lienHe";
     }
-    @GetMapping("/hi")
-    public String hiPage(){
-        return "hi";
+    @GetMapping("/datDoDung")
+    public String datDoDungPage(){
+        return "datDoDung";
     }
-
+    @GetMapping("/datSan")
+    public String datSanPage(){
+        return "datSan";
+    }
+    @GetMapping("/tuVan")
+    public String tuVanPage(){
+        return "tuVan";
+    }
 }

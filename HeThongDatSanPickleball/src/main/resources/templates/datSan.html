@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt Sân Pickleball</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Loader */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #28a745;
+            border-top: 5px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .carousel-item img {
+            height: 700px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-item img:hover {
+            transform: scale(1.02);
+        }
+
+        .carousel-caption {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .carousel-control-prev, .carousel-control-next {
+            width: 5%;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .carousel-control-prev-icon, .carousel-control-next-icon {
+            font-size: 2rem;
+        }
+
+        /* Courts Section */
+        .card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+
+        .card-body {
+            position: relative;
+            padding: 20px;
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #28a745, #218838);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(90deg, #218838, #28a745);
+        }
+
+        /* Booking Section */
+        .booking-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 80px 0;
+        }
+
+        .booking-form {
+            background: linear-gradient(135deg, #ffffff, #f0f4f8);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border: 2px solid #28a745;
+            position: relative;
+            z-index: 1;
+        }
+
+        .booking-form .form-label {
+            font-weight: 600;
+            color: #28a745;
+        }
+
+        .booking-form .form-control, .booking-form .form-select {
+            border-radius: 8px;
+            border: 2px solid #28a745;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .booking-form .form-control:focus, .booking-form .form-select:focus {
+            border-color: #218838;
+            box-shadow: 0 0 8px rgba(40, 167, 69, 0.3);
+        }
+
+        /* Contact Section */
+        .contact-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .contact-row > div {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        @media (max-width: 768px) {
+            .contact-row {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #e6f7ff, #d0e8ff);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .contact-info:hover {
+            transform: translateY(-5px);
+        }
+
+        .contact-info p {
+            margin-bottom: 10px;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .contact-info p strong {
+            color: #ff4d4f;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .social-links a.facebook {
+            background-color: #3b5998;
+            color: white;
+        }
+
+        .social-links a.instagram {
+            background-color: #f09433;
+            color: white;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer-links a {
+            color: #d4edda;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+        }
+
+        /* General */
+        h2 {
+            color: #28a745;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        h4 {
+            color: #28a745;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            border: 2px solid #28a745;
+        }
+
+        .modal-header {
+            background: #28a745;
+            color: white;
+            border-radius: 13px 13px 0 0;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+<!-- Loader -->
+<div class="loader">
+    <div class="spinner"></div>
+</div>
+
+<!-- Carousel for Court Images -->
+<div id="courtCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="img/sanVip.png" class="d-block w-100" alt="Sân VIP">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Sân Pickleball</h5>
+                <p>Sân cao cấp với tiện ích sang trọng.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="img/sanNha.png" class="d-block w-100" alt="Sân Trong Nhà">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Sân Pickleball</h5>
+                <p>Sân hiện đại, không phụ thuộc thời tiết.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="img/sanNgoaiTroi.png" class="d-block w-100" alt="Sân Ngoài Trời">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Sân Pickleball</h5>
+                <p>Không gian thoáng đãng, chi phí hợp lý.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="img/sanTieuChuan.png" class="d-block w-100" alt="Sân Ngoài Trời">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Sân Pickleball</h5>
+                <p>Không gian thoáng đãng, chi phí hợp lý, giá thành rẻ.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="img/sanThuong.png" class="d-block w-100" alt="Sân Ngoài Trời">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Sân Pickleball</h5>
+                <p>Chi phí hợp lý, giá thành rẻ, dành cho học sinh, sinh viên.</p>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#courtCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#courtCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- Courts Section -->
+<section id="courts" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Các Loại Sân Pickleball</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="img/sanVip.png" class="card-img-top" alt="Sân VIP">
+                    <div class="card-body">
+                        <span class="card-badge">VIP</span>
+                        <h5 class="card-title">Sân</h5>
+                        <p class="card-text">Sân cao cấp với bề mặt tiêu chuẩn, hệ thống chiếu sáng hiện đại, khu vực nghỉ ngơi riêng, và dịch vụ đi kèm (nước uống, khăn). Phù hợp cho giải đấu hoặc trải nghiệm sang trọng.</p>
+                        <a href="#booking" class="btn btn-primary">Đặt ngay</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="img/sanNha.png" class="card-img-top" alt="Sân Trong Nhà">
+                    <div class="card-body">
+                        <span class="card-badge">Trong Nhà</span>
+                        <h5 class="card-title">Sân</h5>
+                        <p class="card-text">Sân với mái che, ánh sáng nhân tạo, và điều hòa. Lý tưởng để chơi bất kỳ thời điểm nào, đặc biệt khi thời tiết xấu.</p>
+                        <a href="#booking" class="btn btn-primary">Đặt ngay</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="img/sanNgoaiTroi.png" class="card-img-top" alt="Sân Ngoài Trời">
+                    <div class="card-body">
+                        <span class="card-badge">Ngoài Trời</span>
+                        <h5 class="card-title">Sân</h5>
+                        <p class="card-text">Sân với không gian thoáng đãng, chi phí thấp. Phù hợp cho các trận đấu giải trí hoặc luyện tập ban ngày.</p>
+                        <a href="#booking" class="btn btn-primary">Đặt ngay</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="img/sanTieuChuan.png" class="card-img-top" alt="Sân Tiêu Chuẩn">
+                    <div class="card-body">
+                        <span class="card-badge">Tiêu Chuẩn</span>
+                        <h5 class="card-title">Sân</h5>
+                        <p class="card-text">Sân đúng quy chuẩn quốc tế (13.41m x 6.1m), bề mặt chất lượng cao. Phù hợp cho giải đấu chính thức và luyện tập chuyên nghiệp.</p>
+                        <a href="#booking" class="btn btn-primary">Đặt ngay</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="img/sanThuong.png" class="card-img-top" alt="Sân Thường">
+                    <div class="card-body">
+                        <span class="card-badge">Thường</span>
+                        <h5 class="card-title">Sân</h5>
+                        <p class="card-text">Sân cơ bản, thường chuyển đổi từ sân tennis hoặc đa năng. Chi phí thấp, phù hợp cho người mới chơi hoặc giải trí.</p>
+                        <a href="#booking" class="btn btn-primary">Đặt ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Booking Form Section -->
+<section id="booking" class="booking-section">
+    <div class="container">
+        <h2 class="text-center mb-5">Đặt Sân Pickleball</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="booking-form">
+                    <form id="bookingForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Họ và Tên</label>
+                                <input type="text" class="form-control" id="name" placeholder="Nhập họ và tên" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="Nhập email" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="court" class="form-label">Chọn Sân</label>
+                                <select class="form-select" id="court" required>
+                                    <option value="" disabled selected>Chọn loại sân</option>
+                                    <option value="vip">VIP</option>
+                                    <option value="indoor">Trong Nhà</option>
+                                    <option value="outdoor">Ngoài Trời</option>
+                                    <option value="standard">Tiêu Chuẩn</option>
+                                    <option value="regular">Thường</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="date" class="form-label">Ngày Đặt</label>
+                                <input type="date" class="form-control" id="date" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="time" class="form-label">Thời Gian</label>
+                                <select class="form-select" id="time" required>
+                                    <option value="" disabled selected>Chọn giờ</option>
+                                    <option value="08:00">08:00 - 09:00</option>
+                                    <option value="09:00">09:00 - 10:00</option>
+                                    <option value="10:00">10:00 - 11:00</option>
+                                    <option value="11:00">11:00 - 12:00</option>
+                                    <option value="14:00">14:00 - 15:00</option>
+                                    <option value="15:00">15:00 - 16:00</option>
+                                    <option value="16:00">16:00 - 17:00</option>
+                                    <option value="17:00">17:00 - 18:00</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3 d-flex align-items-end">
+                                <button type="button" class="btn btn-outline-primary w-100" onclick="checkAvailability()">Kiểm tra lịch trống</button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 mt-3">Xác Nhận Đặt Sân</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Liên Hệ</h2>
+        <div class="contact-row">
+            <div>
+                <h4>Thông Tin Liên Hệ</h4>
+                <div class="contact-info">
+                    <p><strong>Địa chỉ:</strong> 123 Nguyễn Văn Cừ, Quận 2, TP.HCM</p>
+                    <p><strong>Điện thoại:</strong> 0700 - 22:00</p>
+                    <p><strong>Hotline:</strong> 0999 123 456</p>
+                    <p><strong>Email:</strong> PickleHub@gmail.com</p>
+
+                    <div class="social-links">
+                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h4>Gửi Tin Nhắn</h4>
+                <form id="contactForm">
+                    <div class="mb-3">
+                        <label for="contactName" class="form-label">Họ và Tên</label>
+                        <input type="text" class="form-control" id="contactName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="contactEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="contactEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Tin Nhắn</label>
+                        <textarea class="form-control" id="message" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Gửi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Back to Top Button -->
+<a href="#" class="back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+<!-- Modal for Booking Confirmation -->
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bookingModalLabel">Xác Nhận Đặt Sân</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Đặt sân thành công! Chúng tôi sẽ gửi email xác nhận đến <strong id="modalEmail"></strong>.</p>
+                <p><strong>Sân:</strong> <span id="modalCourt"></span></p>
+                <p><strong>Ngày:</strong> <span id="modalDate"></span></p>
+                <p><strong>Giờ:</strong> <span id="modalTime"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Contact Form Success -->
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="contactModalLabel">Gửi Tin Nhắn Thành Công</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể qua email <strong id="contactModalEmail"></strong>.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--database-->
+<script>
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Ngăn form reload trang
+
+        const data = {
+            fullName: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            courtType: document.getElementById('court').value,
+            bookingDate: document.getElementById('date').value,
+            bookingTime: document.getElementById('time').value
+        };
+
+        fetch('/booking', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(res => {
+                if (res.ok) {
+                    alert("Đặt sân thành công!");
+                    document.getElementById('bookingForm').reset();
+                } else {
+                    alert("Lỗi khi đặt sân.");
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Đã xảy ra lỗi kết nối.");
+            });
+    });
+</script>
+<!--database-->
+<!-- Bootstrap JS and Custom JS -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Loader
+    window.addEventListener('load', function() {
+        document.querySelector('.loader').classList.add('hidden');
+    });
+
+    // Back to Top Button
+    window.addEventListener('scroll', function() {
+        const backToTop = document.querySelector('.back-to-top');
+        if (window.scrollY > 300) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
+        }
+    });
+
+    // Handle Booking Form Submission
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const court = document.getElementById('court').options[document.getElementById('court').selectedIndex].text;
+        const date = document.getElementById('date').value;
+        const time = document.getElementById('time').options[document.getElementById('time').selectedIndex].text;
+
+        document.getElementById('modalEmail').textContent = email;
+        document.getElementById('modalCourt').textContent = court;
+        document.getElementById('modalDate').textContent = date;
+        document.getElementById('modalTime').textContent = time;
+
+        const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
+        modal.show();
+
+        this.reset();
+    });
+
+    // Handle Contact Form Submission
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('contactEmail').value;
+
+        document.getElementById('contactModalEmail').textContent = email;
+
+        const modal = new bootstrap.Modal(document.getElementById('contactModal'));
+        modal.show();
+
+        this.reset();
+    });
+
+    // Check Availability (Placeholder)
+    function checkAvailability() {
+        const court = document.getElementById('court').value;
+        const date = document.getElementById('date').value;
+        if (court && date) {
+            alert('Lịch trống cho ' + document.getElementById('court').options[document.getElementById('court').selectedIndex].text + ' vào ngày ' + date + '. Vui lòng chọn giờ!');
+        } else {
+            alert('Vui lòng chọn sân và ngày trước khi kiểm tra lịch trống!');
+        }
+    }
+//
+//
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'931d203ff97432fb',t:'MTc0NDkwNTUyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>

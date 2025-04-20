@@ -1,5 +1,11 @@
 .navbar-brand img {
   width: 50px;
+  margin-left: 0;
+}
+@media (min-width: 992px) {
+  .navbar-brand img {
+    margin-left: 50px; /* Áp dụng cho laptop trở lên */
+  }
 }
 .item-item img {
   width: 50px;
@@ -19,3 +25,13 @@
 .container-lienHe {
   padding-top: 70px;
 }
+.layout {
+  padding-top: 70px;
+  z-index: 1;
+}
+.container-footer{
+  margin: auto;
+  z-index: 2;
+  position: relative;
+}
+

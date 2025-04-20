@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pickleball - Đặt Đồ Ăn & Dụng Cụ</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1621026143796-ea1e1e37f2f6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            margin: 0;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.75);
+            z-index: -1;
+        }
+        .navbar {
+            background: linear-gradient(90deg, #007bff, #00c4ff) !important;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+            padding: 15px 0;
+        }
+        .navbar-brand img {
+            height: 45px;
+            transition: transform 0.3s ease;
+        }
+        .navbar-brand img:hover {
+            transform: scale(1.1);
+        }
+        .navbar-nav .nav-link {
+            color: #2c3e50 !important; /* Changed to dark color */
+            font-weight: 500;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-radius: 25px;
+        }
+        .navbar-nav .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #495057 !important; /* Darker gray on hover */
+        }
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #ff4d4d;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 2rem;
+            border-bottom: 4px solid;
+            display: inline-block;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        #food .section-title {
+            border-color: #ff9800;
+            color: #ff9800;
+        }
+        #equipment .section-title {
+            border-color: #28a745;
+            color: #28a745;
+        }
+        .product-card {
+            position: relative;
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.98);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        .product-image {
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        #food .product-card {
+            background-color: rgba(255, 243, 224, 0.98);
+        }
+        #equipment .product-card {
+            background-color: rgba(230, 244, 234, 0.98);
+        }
+        .card-title {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .card-text {
+            color: #e91e63;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #007bff, #00c4ff);
+            border: none;
+            padding: 10px 20px;
+            font-weight: 500;
+            border-radius: 25px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #0056b3, #0096cc);
+            transform: translateY(-2px);
+        }
+        .badge-new {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #ff4d4d;
+            color: white;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border-radius: 12px;
+        }
+        .modal-content {
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .modal-header {
+            background: linear-gradient(90deg, #007bff, #00c4ff);
+            color: white;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom: none;
+        }
+        .modal-footer .btn {
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-weight: 500;
+        }
+        .modal-footer .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+        .modal-footer .btn-primary, .modal-footer .btn-success {
+            background: linear-gradient(90deg, #28a745, #34c759);
+        }
+        .modal-footer .btn-primary:hover, .modal-footer .btn-success:hover {
+            background: linear-gradient(90deg, #218838, #2ea44f);
+        }
+        .list-group-item {
+            border-radius: 10px;
+            margin-bottom: 5px;
+            background-color: #f8f9fa;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        .checkout-form {
+            display: none;
+        }
+        .checkout-form input, .checkout-form select {
+            border-radius: 10px;
+            border: 1px solid #ced4da;
+            padding: 10px;
+        }
+        #successModal .modal-header {
+            background: linear-gradient(90deg, #28a745, #34c759);
+        }
+        #successModal .modal-body {
+            background-color: #f8f9fa;
+        }
+        .success-icon {
+            font-size: 3.5rem;
+            color: #28a745;
+            animation: bounce 0.5s ease;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="https://webpickleball.vn/wp-content/uploads/2024/10/webpickleball-Logo-webiste5.webp" alt="Web Pickleball – Pickleball cho mọi người">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#food">Đồ Ăn/Uống</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#equipment">Dụng Cụ Pickleball</a>
+                </li>
+                <li class="nav-item position-relative">
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#cartModal">
+                        <i class="fas fa-shopping-cart"></i> Giỏ Hàng
+                        <span id="cart-count" class="cart-count">0</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container my-5">
+    <!-- Food & Drinks Section -->
+    <section id="food">
+        <h2 class="text-center mb-4 section-title">Đồ Ăn & Uống</h2>
+        <div class="row" id="food-list"></div>
+    </section>
+
+    <!-- Pickleball Equipment Section -->
+    <section id="equipment" class="mt-5">
+        <h2 class="text-center mb-4 section-title">Dụng Cụ Pickleball</h2>
+        <div class="row" id="equipment-list"></div>
+    </section>
+</div>
+
+<!-- Cart Modal -->
+<div class="modal fade" id="cartModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Giỏ Hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <ul id="cart-items" class="list-group"></ul>
+                <p class="mt-3"><strong>Tổng cộng: <span id="cart-total">0</span>đ</strong></p>
+                <!-- Checkout Form -->
+                <div id="checkout-form" class="checkout-form mt-3">
+                    <h6>Thông Tin Thanh Toán</h6>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Họ và Tên</label>
+                        <input type="text" class="form-control" id="name" placeholder="Nhập họ và tên" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Số Điện Thoại</label>
+                        <input type="tel" class="form-control" id="phone" placeholder="Nhập số điện thoại" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Địa Chỉ Giao Hàng</label>
+                        <input type="text" class="form-control" id="address" placeholder="Nhập địa chỉ" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="payment-method" class="form-label">Phương Thức Thanh Toán</label>
+                        <select class="form-select" id="payment-method" required>
+                            <option value="" disabled selected>Chọn phương thức</option>
+                            <option value="cash">Tiền mặt khi nhận hàng</option>
+                            <option value="card">Thẻ tín dụng</option>
+                            <option value="momo">Momo</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="proceed-to-checkout" onclick="showCheckoutForm()">Thanh Toán</button>
+                <button type="button" class="btn btn-success checkout-form" id="confirm-checkout" onclick="confirmCheckout()">Xác Nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thanh Toán Thành Công</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fas fa-check-circle success-icon mb-3"></i>
+                <h5>Cảm ơn bạn đã đặt hàng!</h5>
+                <p>Đơn hàng của bạn đã được ghi nhận thành công.</p>
+                <div id="order-details" class="text-start mt-3"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tiếp Tục Mua Sắm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--database-->
+<!--database-->
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const products = [
+        // Food & Drinks
+        { id: 1, name: 'Bánh mì sandwich', price: 35000, category: 'food', image: 'https://plus.unsplash.com/premium_photo-1661767515069-2777c71b98e5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', isNew: true },
+        { id: 2, name: 'Nước ép cam', price: 30000, category: 'food', image: 'https://plus.unsplash.com/premium_photo-1675667390417-d9d23160f4a6?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+        { id: 3, name: 'Sữa chua Hy Lạp', price: 25000, category: 'food', image: 'https://images.unsplash.com/photo-1719385129909-2e0b347905df?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+        { id: 4, name: 'Revive thường', price: 10000, category: 'food', image: 'https://cdn.tgdd.vn/Products/Images/3226/83581/bhx/nuoc-ngot-revive-vi-muoi-khoang-chai-500ml-201812060918208543.jpg' },
+        { id: 5, name: 'Revive chanh muối', price: 12000, category: 'food', image: 'https://thegioidouong.net/wp-content/uploads/2021/06/loi-giai-cho-cau-hoi-uong-revive-co-tot-khong1.jpg' },
+        { id: 6, name: 'Nước ngọt các loại', price: 10000, category: 'food', image: 'https://file.hstatic.net/1000394081/article/nuoc-ngot_f959f1b7921240f49c1c6842dc5d7894.jpg' },
+        { id: 7, name: 'Mì xào hải sản', price: 40000, category: 'food', image: 'https://www.maggi.com.vn/sites/default/files/srh_recipes/5d6f27b2a7976cce3f0e7fbbb0c48670.jpg', isNew: true },
+        { id: 8, name: 'Cà phê sữa đá', price: 30000, category: 'food', image: 'https://ongbi.vn/wp-content/uploads/2023/01/ca-phe-sua-da.jpg' },
+        { id: 9, name: 'Cà phê đá', price: 25000, category: 'food', image: 'https://bizweb.dktcdn.net/thumb/grande/100/479/802/products/ca-phe-den-da.png?v=1707230275623' },
+        // Pickleball Equipment
+        { id: 10, name: 'Giày đế mềm', price: 850000, category: 'equipment', image: 'https://lh7-rt.googleusercontent.com/docsz/AD_4nXf1KtArldIKuZ4xiQUhTxsHv64dHGwahCECYQbyWKFHoHsRMkdhy7Rn6cfnkYQddjw-nhNeJixQTk0U9RK4mfgDbxZyL5LuMDTQaY7L92bIGpKvQJzM6dt9akhNP96-nnBEZAZFYtEs2CBO8BfhOpTykGQU?key=NKbO9cvSobegvj-r6Vy1iA' },
+        { id: 11, name: 'Băng đeo cổ tay', price: 50000, category: 'equipment', image: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-m06wpmzn4wrx8f' },
+        { id: 12, name: 'Túi đựng bóng', price: 120000, category: 'equipment', image: 'https://bissport.com/uploads/images/product/2024/09/tuidungbongpickleballamaxacechinhhangmaucamdungtichlontienloi.png', isNew: true },
+        { id: 13, name: 'Quả bóng', price: 100000, category: 'equipment', image: 'https://file.hstatic.net/1000331599/file/77.2-_hibisports.com_-_cac_loai_bong_pickleball_pho_bien_fda6762b8aa0467d94010f99e2e4ac17.jpg' },
+    ];
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Display Products
+    const foodList = document.getElementById('food-list');
+    const equipmentList = document.getElementById('equipment-list');
+
+    products.forEach(product => {
+        const productCard = `
+                <div class="col-md-4 mb-4">
+                    <div class="card product-card">
+                        ${product.isNew ? '<span class="badge-new">Mới</span>' : ''}
+                        <img src="${product.image}" class="card-img-top product-image" alt="${product.name}">
+                        <div class="card-body">
+                            <h5 class="card-title">${product.name}</h5>
+                            <p class="card-text">${product.price.toLocaleString('vi-VN')}đ</p>
+                            <button class="btn btn-primary" onclick="addToCart(${product.id})">Thêm vào giỏ</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        if (product.category === 'food') {
+            foodList.innerHTML += productCard;
+        } else {
+            equipmentList.innerHTML += productCard;
+        }
+    });
+
+    // Add to Cart
+    function addToCart(productId) {
+        const product = products.find(p => p.id === productId);
+        cart.push(product);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCart();
+        alert(`${product.name} đã được thêm vào giỏ hàng!`);
+    }
+
+    // Update Cart Display
+    function updateCart() {
+        const cartItems = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+        const cartCount = document.getElementById('cart-count');
+        cartItems.innerHTML = '';
+        let total = 0;
+
+        cart.forEach((item, index) => {
+            total += item.price;
+            cartItems.innerHTML += `
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        ${item.name} - ${item.price.toLocaleString('vi-VN')}đ
+                        <button class="btn btn-danger btn-sm" onclick="removeFromCart(${index})">Xóa</button>
+                    </li>
+                `;
+        });
+
+        cartTotal.textContent = total.toLocaleString('vi-VN');
+        cartCount.textContent = cart.length;
+    }
+
+    // Remove from Cart
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCart();
+    }
+
+    // Show Checkout Form
+    function showCheckoutForm() {
+        if (cart.length === 0) {
+            alert('Giỏ hàng trống!');
+            return;
+        }
+        document.getElementById('checkout-form').style.display = 'block';
+        document.getElementById('proceed-to-checkout').style.display = 'none';
+        document.getElementById('confirm-checkout').style.display = 'inline-block';
+    }
+
+    // Confirm Checkout
+    function confirmCheckout() {
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const paymentMethod = document.getElementById('payment-method').value;
+
+        if (!name || !phone || !address || !paymentMethod) {
+            alert('Vui lòng điền đầy đủ thông tin thanh toán!');
+            return;
+        }
+
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        const orderDetails = document.getElementById('order-details');
+        let itemsList = '<h6>Danh sách sản phẩm:</h6><ul>';
+        cart.forEach(item => {
+            itemsList += `<li>${item.name} - ${item.price.toLocaleString('vi-VN')}đ</li>`;
+        });
+        itemsList += '</ul>';
+        
+        orderDetails.innerHTML = `
+            ${itemsList}
+            <p><strong>Tổng cộng:</strong> ${total.toLocaleString('vi-VN')}đ</p>
+            <p><strong>Khách hàng:</strong> ${name}</p>
+            <p><strong>Số điện thoại:</strong> ${phone}</p>
+            <p><strong>Địa chỉ giao hàng:</strong> ${address}</p>
+            <p><strong>Phương thức thanh toán:</strong> ${paymentMethod === 'cash' ? 'Tiền mặt khi nhận hàng' : paymentMethod === 'card' ? 'Thẻ tín dụng' : 'Momo'}</p>
+        `;
+
+        // Show success modal
+        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        successModal.show();
+
+        // Reset cart and form
+        cart = [];
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCart();
+        document.getElementById('checkout-form').style.display = 'none';
+        document.getElementById('proceed-to-checkout').style.display = 'inline-block';
+        document.getElementById('confirm-checkout').style.display = 'none';
+        document.getElementById('name').value = '';
+        document.getElementById('phone').value = '';
+        document.getElementById('address').value = '';
+        document.getElementById('payment-method').value = '';
+        document.getElementById('cartModal').querySelector('.btn-close').click();
+    }
+
+    // Initial Cart Update
+    updateCart();
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9311eb4fcb3a4515',t:'MTc0NDc4ODAxNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
