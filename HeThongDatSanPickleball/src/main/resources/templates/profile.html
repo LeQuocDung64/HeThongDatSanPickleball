@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hồ sơ cá nhân</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            background-color: #f4f6f8;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 500px;
+            margin: 60px auto;
+            text-align: center;
+        }
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        .info-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .info-card p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .info-card strong {
+            font-weight: bold;
+        }
+        .button-group button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .edit-btn {
+            background-color: #f0ad4e;
+            color: white;
+        }
+        .logout-btn {
+            background-color: #d9534f;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <p>Xin chào, <span th:text="${user.username}">User</span></p>
+    <img th:src="@{/img/defaultavatar.png}" alt="Avatar" class="profile-pic"/>
+
+    <div class="info-card">
+        <p><strong>Tên đăng nhập:</strong> <span th:text="${user.username}">username</span></p>
+        <p>
+            <strong>Mật khẩu:</strong>
+            <span id="password" style="letter-spacing: 3px;">********</span>
+            <button onclick="togglePassword()" style="border: none; background: none; cursor: pointer;">
+                👁️
+            </button>
+        </p>
+    </div>
+
+
+    <div class="button-group">
+        <a th:href="@{/logout}">
+            <button class="logout-btn">Đăng xuất</button>
+        </a>
+    </div>
+</div>
+<script>
+    function togglePassword() {
+        const passwordSpan = document.getElementById("password");
+        if (passwordSpan.textContent === "********") {
+            passwordSpan.textContent = "[[${user.password}]]";
+        } else {
+            passwordSpan.textContent = "********";
+        }
+    }
+</script>
+
+</body>
+</html>

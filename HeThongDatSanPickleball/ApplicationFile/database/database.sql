@@ -66,18 +66,8 @@ CREATE TABLE booking (
                           booking_time TIME
 );
 INSERT INTO courts (name, type, description, image_url) VALUES
--- Sân VIP
-('Sân VIP', 'VIP', 'Sân cao cấp với bề mặt tiêu chuẩn, hệ thống chiếu sáng hiện đại, phù hợp người chơi nâng cao và sân mướt siêu đẹp. Hợp cho giải đấu hoặc trải nghiệm sang trọng.', 'https://link-to-image/vip.jpg'),
-
--- Sân Trong Nhà
-('Sân Trong Nhà', 'Trong Nhà', 'Sân với mái che, ánh sáng nhân tạo và điều hòa. Lý tưởng chơi bất kỳ thời điểm nào, đặc biệt khi thời tiết xấu.', 'https://link-to-image/indoor.jpg'),
-
--- Sân Ngoài Trời
-('Sân Ngoài Trời', 'Ngoài Trời', 'Sân với không gian thoáng đãng, chi phí thấp. Phù hợp cho các trận đấu giải trí hoặc luyện tập ban ngày.', 'https://link-to-image/outdoor.jpg'),
-
--- Sân Tiêu Chuẩn
-('Sân Tiêu Chuẩn', 'Tiêu Chuẩn', 'Sân đúng quy chuẩn quốc tế (13.41m x 6.1m), bề mặt chất lượng cao. Phù hợp giải đấu chính thức và luyện tập chuyên nghiệp.', 'https://link-to-image/standard.jpg'),
-
--- Sân Thường
-('Sân Thường', 'Thường', 'Sân cải biên, thường chuyển đổi từ sân tennis hoặc đa năng. Chi phí rẻ, phù hợp cho người mới chơi hoặc giải trí.', 'https://link-to-image/basic.jpg');
-
+('null', 'VIP', 'Sân cao cấp với bề mặt tiêu chuẩn, hệ thống chiếu sáng hiện đại, phù hợp người chơi nâng cao và sân mướt siêu đẹp. Hợp cho giải đấu hoặc trải nghiệm sang trọng.', '/img/SanVip.png'),
+('null', 'Trong Nhà', 'Sân với mái che, ánh sáng nhân tạo và điều hòa. Lý tưởng chơi bất kỳ thời điểm nào, đặc biệt khi thời tiết xấu.', '/img/sanNha.png'),
+('null', 'Ngoài Trời', 'Sân với không gian thoáng đãng, chi phí thấp. Phù hợp cho các trận đấu giải trí hoặc luyện tập ban ngày.', '/img/sanNgoaiTroi.png'),
+('null', 'Tiêu Chuẩn', 'Sân đúng quy chuẩn quốc tế (13.41m x 6.1m), bề mặt chất lượng cao. Phù hợp giải đấu chính thức và luyện tập chuyên nghiệp.', '/img/sanTieuChuan.png'),
+('null', 'Thường', 'Sân cải biên, thường chuyển đổi từ sân tennis hoặc đa năng. Chi phí rẻ, phù hợp cho người mới chơi hoặc giải trí.', '/img/sanThuong.png');

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<!--<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -51,6 +53,20 @@
               <a class="nav-link" aria-current="page" href="lienHe">Liên hệ</a>
             </li>
           </ul>
+          <!-- Chưa đăng nhập: hiện nút Đăng nhập -->
+          <div sec:authorize="!isAuthenticated()">
+            <form th:action="@{/login}" method="get">
+              <button type="submit" class="btn btn-primary">Đăng nhập</button>
+            </form>
+          </div>
+
+          <!-- Đã đăng nhập: hiện Hồ sơ cá nhân và Đăng xuất -->
+          <div sec:authorize="isAuthenticated()">
+            <a th:href="@{/profile}" class="btn btn-outline-secondary text-dark ms-2">Hồ sơ </a>
+            <form th:action="@{/logout}" method="post" class="d-inline">
+              <button type="submit" class="btn btn-outline-secondary ms-2 text-dark">Đăng xuất</button>
+            </form>
+          </div>
           <!-- form -->
           <form id="searchForm" class="d-flex" role="search">
             <input
