@@ -1,0 +1,53 @@
+package com.example.HeThongDatSanPickleball.controller;
+
+import com.example.HeThongDatSanPickleball.entity.TuVan;
+import com.example.HeThongDatSanPickleball.repository.TuVanRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/tuvan")
+public class TuVanController {
+
+    @Autowired
+    private TuVanRepository tuVanRepository;
+
+    // Lấy tất cả yêu cầu tư vấn
+    @GetMapping
+    public List<TuVan> getAllTuVan() {
+        return tuVanRepository.findAll();
+    }
+
+    // Tạo mới yêu cầu tư vấn
+    @PostMapping
+    public TuVan createTuVan(@RequestBody TuVan tuVan) {
+        return tuVanRepository.save(tuVan);
+    }
+
+    // Cập nhật trạng thái yêu cầu tư vấn
+    @PutMapping("/{id}")
+    public ResponseEntity<TuVan> updateTuVan(@PathVariable Long id, @RequestBody TuVan tuVanDetails) {
+        Optional<TuVan> tuVanOptional = tuVanRepository.findById(id);
+        if (!tuVanOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        TuVan tuVan = tuVanOptional.get();
+        tuVan.setIsResolved(tuVanDetails.getIsResolved());
+        TuVan updatedTuVan = tuVanRepository.save(tuVan);
+        return ResponseEntity.ok(updatedTuVan);
+    }
+
+    // Xóa yêu cầu tư vấn
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTuVan(@PathVariable Long id) {
+        if (!tuVanRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        tuVanRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+}
